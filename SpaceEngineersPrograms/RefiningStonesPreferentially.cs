@@ -103,16 +103,17 @@ namespace SpaceEngineersPrograms
             Containers.AddRange(ShipDrills);
 
             //parse arguments. You can set the name of the output LCD panel, the threshold for evacuating ores other than stone, and the language of the message.
-            string[] arguments = argument.Split(',');
+            //\s is whitespace characters. @ is a character that prevents the exception from occurring even if the string contains an escape sequence that is not usually recognized such as "\s".
+            string[] arguments = System.Text.RegularExpressions.Regex.Split(argument, @"\s*,\s*");
             for (int i = 0; i < arguments.Length; i++)
             {
-                string[] arg = arguments[i].Split(':');
+                string[] arg = System.Text.RegularExpressions.Regex.Split(arguments[i], @"\s*:\s*");
                 if (arg.Length == 2)
                 {
-                    switch (arg[0])
+                    switch (arg[0].Trim())
                     {
                         case "LCDName":
-                            LCDName = arg[1];
+                            LCDName = arg[1].Trim();
                             break;
 
                         case "rThreshold":
@@ -126,10 +127,10 @@ namespace SpaceEngineersPrograms
                             break;
 
                         case "Lang":
-                            //Recognize upper case and lower case.
-                            if (System.Text.RegularExpressions.Regex.IsMatch(arg[1], "^(?i)english$|^(?i)japanese$"))
+                            //Recognize upper case and lower case. and allow leading and trailing whitespace characters.
+                            if (System.Text.RegularExpressions.Regex.IsMatch(arg[1].Trim(), "^(?i)english$|^(?i)japanese$"))
                             {
-                                Language = arg[1].ToLower();
+                                Language = arg[1].Trim().ToLower(); //Trim():remove whitespace. ToLower:make all characters lowercase.
                             }
                             else
                             {
