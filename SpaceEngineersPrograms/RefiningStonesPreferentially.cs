@@ -17,10 +17,10 @@ namespace SpaceEngineersPrograms
     class CodeEditorEmulator : MyGridProgram
     {
         #region CodeEditor
-
+        //Please copy and paste from here to the mark when running this program in SpaceEngineers.
         const string LCDNameDefault = "LCD Panel RSP Output";
         const float rThresholdDefault = 1000.0f;
-        const string LanguageDefault = "English";
+        const string LanguageDefault = "english";
 
         //English message data
         static Dictionary<string, string> EnglishMessage = new Dictionary<string, string>()
@@ -70,8 +70,8 @@ namespace SpaceEngineersPrograms
 
         static Dictionary<string, Dictionary<string, string>> messages = new Dictionary<string, Dictionary<string, string>>()
         {
-            { "English", EnglishMessage },
-            { "Japanese", JapaneseMessage }
+            { "english", EnglishMessage },
+            { "japanese", JapaneseMessage }
         };
 
         public void Save()
@@ -126,9 +126,10 @@ namespace SpaceEngineersPrograms
                             break;
 
                         case "Lang":
-                            if(arg[1] == "English" || arg[1] == "Japanese")
+                            //Recognize upper case and lower case.
+                            if (System.Text.RegularExpressions.Regex.IsMatch(arg[1], "^(?i)english$|^(?i)japanese$"))
                             {
-                                Language = arg[1];
+                                Language = arg[1].ToLower();
                             }
                             else
                             {
@@ -254,7 +255,7 @@ namespace SpaceEngineersPrograms
             inventory.GetItems(items);
             for(int i = 0; i < items.Count; i++)
             {
-                if(items[i].Type.ToString().Contains("Ore") && (items[i].Type.ToString().Contains("Iron") || items[i].Type.ToString().Contains("Nickel") || items[i].Type.ToString().Contains("Cobalt") || items[i].Type.ToString().Contains("Magnesium") || items[i].Type.ToString().Contains("Silicon") || items[i].Type.ToString().Contains("Silver") || items[i].Type.ToString().Contains("Gold") || items[i].Type.ToString().Contains("Platinum") || items[i].Type.ToString().Contains("Uranium")))
+                if(items[i].Type.ToString().Contains("Ore") && System.Text.RegularExpressions.Regex.IsMatch(items[i].Type.ToString(), "Iron|Nickel|Cobalt|Magnesium|Silicon|Silver|Gold|Platinum|Uranium"))
                 {
                     for(int j = 0; j < dstContainers.Count; j++)
                     {
@@ -276,6 +277,7 @@ namespace SpaceEngineersPrograms
             }
             Me.CustomData = outputOnlyCustom + output;
         }
+        //Please copy and paste from the mark to here when running this program in SpaceEngineers.
         #endregion
     }
 }
