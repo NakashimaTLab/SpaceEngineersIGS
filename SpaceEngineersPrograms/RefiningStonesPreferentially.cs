@@ -14,7 +14,7 @@ using VRageMath;
 
 namespace SpaceEngineersPrograms
 {
-    class CodeEditorEmulator : MyGridProgram
+    class RefiningStonesPreferentially : MyGridProgram
     {
         #region CodeEditor
         //Please copy and paste from here to the mark when running this program in SpaceEngineers.
@@ -73,13 +73,6 @@ namespace SpaceEngineersPrograms
             { "english", EnglishMessage },
             { "japanese", JapaneseMessage }
         };
-
-        public void Save()
-        {
-            // プログラムが状態を保存する必要がある時に呼び出されます。このメソッドを使用して、ストレージ・フィールドまたはその他の手段に状態を保存します。
-            // 
-            // このメソッドは省略可能であり、不要な場合は削除することが可能です。
-        }
 
         public void Main(string argument, UpdateType updateSource)
         {
@@ -181,9 +174,12 @@ namespace SpaceEngineersPrograms
                     }
                     else
                     {
-                        output += messages[Language]["stoneLocated1"] + Containers[i].CustomName + messages[Language]["stoneLocated2"];
-                        stoneExistonGrid = true;
-                        stoneContain = true;
+                        if (!stoneContain)
+                        {
+                            output += messages[Language]["stoneLocated1"] + Containers[i].CustomName + messages[Language]["stoneLocated2"];
+                            stoneExistonGrid = true;
+                            stoneContain = true;
+                        }
                     }
 
                     IMyInventory refineryInventory = Refineries[j].GetInventory(0);
