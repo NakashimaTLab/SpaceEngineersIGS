@@ -36,6 +36,7 @@ namespace SpaceEngineersPrograms
             {"Language", "言語"}
         };
 
+        //Integrate messages written in each language.
         static Dictionary<string, Dictionary<string, string>> messages = new Dictionary<string, Dictionary<string, string>>()
         {
             { "english", EnglishMessage },

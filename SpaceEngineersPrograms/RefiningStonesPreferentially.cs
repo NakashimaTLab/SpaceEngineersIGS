@@ -68,6 +68,7 @@ namespace SpaceEngineersPrograms
             {"noTransportableStoneOnGrid", "グリッド上に搬出可能な石がありません。\n"}
         };
 
+        //Integrate messages written in each language.
         static Dictionary<string, Dictionary<string, string>> messages = new Dictionary<string, Dictionary<string, string>>()
         {
             { "english", EnglishMessage },
