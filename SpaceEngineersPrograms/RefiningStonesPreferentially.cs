@@ -121,7 +121,7 @@ namespace SpaceEngineersPrograms
 
                         case "Lang":
                             //Recognize upper case and lower case. and allow leading and trailing whitespace characters.
-                            if (System.Text.RegularExpressions.Regex.IsMatch(arg[1].Trim(), "^(?i)english$|^(?i)japanese$"))
+                            if (System.Text.RegularExpressions.Regex.IsMatch(arg[1].Trim(), "^(?i)english$|^japanese$"))
                             {
                                 Language = arg[1].Trim().ToLower(); //Trim():remove whitespace. ToLower:make all characters lowercase.
                             }
