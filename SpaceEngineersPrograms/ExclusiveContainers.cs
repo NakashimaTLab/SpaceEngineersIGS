@@ -72,6 +72,101 @@ namespace SpaceEngineersPrograms
             { "japanese", JapaneseMessage }
         };
 
+        static Dictionary<string, string> EnglishAmmoMagazineName = new Dictionary<string, string>()
+        {
+            {"Missile200mm", ""},
+            {"NATO_25x184mm", ""},
+            {"NATO_5p56x45mm", ""}
+        };
+
+        static Dictionary<string, string> EnglishComponentName = new Dictionary<string, string>()
+        {
+            {"BulletproofGlass", ""},
+            {"Canvas", ""},
+            {"Computer", ""},
+            {"Construction", ""},
+            {"Detector", ""},
+            {"Display", ""},
+            {"Explosives", ""},
+            {"Girder", ""},
+            {"GravityGenerator", ""},
+            {"InteriorPlate", ""},
+            {"LargeTube", ""},
+            {"Medical", ""},
+            {"MetalGrid", ""},
+            {"Motor", ""},
+            {"PowerCell", ""},
+            {"RadioCommunication", ""},
+            {"Reactor", ""},
+            {"SmallTube", ""},
+            {"SolarCell", ""},
+            {"SteelPlate", ""},
+            {"Superconductor", ""},
+            {"Thrust", ""}
+        };
+
+        static Dictionary<string, string> EnglishGasContainerObjectName = new Dictionary<string, string>()
+        {
+            {"HydrogenBottle", ""}
+        };
+
+        static Dictionary<string, string> EnglishIngotName = new Dictionary<string, string>()
+        {
+            {"Cobalt", ""},
+            {"Gold", ""},
+            {"Iron", ""},
+            {"Magnesium", ""},
+            {"Nickel", ""},
+            {"Platinum", ""},
+            {"Scrap", ""},
+            {"Silicon", ""},
+            {"Silver", ""},
+            {"Stone", ""},
+            {"Uranium", ""}
+        };
+
+        static Dictionary<string, string> EnglishOreName = new Dictionary<string, string>()
+        {
+            {"Cobalt", ""},
+            {"Gold", ""},
+            {"Ice", ""},
+            {"Iron", ""},
+            {"Magnesium", ""},
+            {"Nickel", ""},
+            {"Organic", ""},
+            {"Platinum", ""},
+            {"Scrap", ""},
+            {"Silicon", ""},
+            {"Silver", ""},
+            {"Stone", ""},
+            {"Uranium", ""}
+        };
+
+        static Dictionary<string, string> EnglishOxygenContainerObjectName = new Dictionary<string, string>()
+        {
+            {"OxygenBottle", ""}
+        };
+
+        static Dictionary<string, string> EnglishPhysicalGunObjectName = new Dictionary<string, string>()
+        {
+            {"AngleGrinder2Item", ""},
+            {"AngleGrinder3Item", ""},
+            {"AngleGrinder4Item", ""},
+            {"AngleGrinderItem", ""},
+            {"AutomaticRifleItem", ""},
+            {"HandDrill2Item", ""},
+            {"HandDrill3Item", ""},
+            {"HandDrill4Item", ""},
+            {"HandDrillItem", ""},
+            {"PreciseAutomaticRifleItem", ""},
+            {"RapidFireAutomaticRifleItem", ""},
+            {"RapidFireAutomaticRifleItem", ""},
+            {"WelderItem", ""},
+            {"WelderItem", ""},
+            {"WelderItem", ""},
+            {"WelderItem", ""}
+        };
+
         //dictionary of TypeIDs. TypeID is required to search for items in the block's inventory.
         static Dictionary<string, string[]> TypeIDs = new Dictionary<string, string[]>()
         {
