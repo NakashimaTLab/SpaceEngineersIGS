@@ -72,7 +72,14 @@ namespace SpaceEngineersPrograms
         {
             {"languageInvalid", "Argument \"Lang\" is invalid value.\n Language of message is set to " + LanguageDefault + ".\n"},
             {"outputLCDName", "outputLCDName" },
-            {"Language", "Language"}
+            {"Language", "Language"},
+            {"deliveredItems", "The following items are delivered to this container:\n"},
+            {"priority", "Priority"},
+            {"invalidID1", ":"},
+            {"invalidID2", " is an invalid specifier.\n"},
+            {"invalidPriority1", ": The priority of "},
+            {"invalidPriority2", " is an invalid value.\n"},
+            {"detectedInvalidSpecifier", "An invalid specifier or invalid priority was detected.\nThis program is not executed to avoid incorrect operation.\n"}
         };
 
         //Japanese message data
@@ -80,7 +87,14 @@ namespace SpaceEngineersPrograms
         {
             {"languageInvalid", "引数 \"Lang\" が無効な値です。メッセージの言語は " + LanguageDefault + " に設定されました。\n"},
             {"outputLCDName", "出力先LCDパネル" },
-            {"Language", "言語"}
+            {"Language", "言語"},
+            {"deliveredItems", "このコンテナには以下のアイテムが配送されます。\n"},
+            {"priority", "優先度"},
+            {"invalidID1", " の "},
+            {"invalidID2", " は無効な指定子です。\n"},
+            {"invalidPriority1", " の "},
+            {"invalidPriority2", " の優先度は無効な値です。\n"},
+            {"detectedInvalidSpecifier", "無効な指定子あるいは優先度の値が検出されました。\n不正な動作を避けるため、プログラムは実行されません。\n"}
         };
 
         //Integrate messages written in each language.
@@ -520,6 +534,8 @@ namespace SpaceEngineersPrograms
             OutputLCD = GridTerminalSystem.GetBlockWithName(LCDName) as IMyTextPanel;
 
             string[] TypeIDsKeys;
+            TypeIDsKeys = new string[TypeIDs.Count];
+            TypeIDs.Keys.CopyTo(TypeIDsKeys, 0);
             for (int i = 0; i < DestinationCandidate.Length; i++)
             {
                 //Cut out the bracketed part of the custom data using positive look-ahead and positive look-behind.
@@ -554,8 +570,8 @@ namespace SpaceEngineersPrograms
                     }
                 }
 
-                TypeIDsKeys = new string[TypeIDs.Count];
-                TypeIDs.Keys.CopyTo(TypeIDsKeys, 0);
+                List<string> validSpecifiers = new List<string>();
+                List<int> validPriorities = new List<int>();
                 for(int j = 0; j < spIDs.Count; j++)
                 {
                     bool spIDMatched = false;
@@ -581,10 +597,13 @@ namespace SpaceEngineersPrograms
                                 if ((sameDestination = Destinations[TypeIDsKeys[k]][TypeIDs[TypeIDsKeys[k]][l]].Find(d => d.IsSameBlock(DestinationCandidate[i]))) == null)
                                 {
                                     Destinations[TypeIDsKeys[k]][TypeIDs[TypeIDsKeys[k]][l]].Add(new Destination(DestinationCandidate[i], spPriorities[j]));
+                                    validSpecifiers.Add(ItemNames[Language][TypeIDsKeys[k]][TypeIDs[TypeIDsKeys[k]][l]]);
+                                    validPriorities.Add(spPriorities[j]);
                                 }
                                 else
                                 {
                                     sameDestination.Priority = spPriorities[j];
+                                    validPriorities[validSpecifiers.IndexOf(ItemNames[Language][TypeIDsKeys[k]][TypeIDs[TypeIDsKeys[k]][l]])] = spPriorities[j];
                                 }
                                 spIDMatched = true;
                             }
@@ -596,11 +615,51 @@ namespace SpaceEngineersPrograms
                         detectedInvalidSpecifiers = true;
                     }
                 }
+
+                if(validSpecifiers.Count > 0)
+                {
+                    string specifierOutput = "<excontmessage>\n\t" + messages[Language]["deliveredItems"];
+                    for (int j = 0; j < validSpecifiers.Count; j++)
+                    {
+                        specifierOutput += "\t" + validSpecifiers[j] + "(" + messages[Language]["priority"] + ":" + validPriorities[j].ToString() + ")\n";
+                    }
+                    specifierOutput += "</excontmessage>";
+
+                    System.Text.RegularExpressions.MatchCollection CustomDataPreserve = System.Text.RegularExpressions.Regex.Matches(DestinationCandidate[i].CustomData, "^.*(?=<excontmessage>)|(?<=</excontmessage>).*$");
+                    DestinationCandidate[i].CustomData = "";
+                    for(int j = 0; j < CustomDataPreserve.Count; j++)
+                    {
+                        DestinationCandidate[i].CustomData += CustomDataPreserve[j].ToString();
+                    }
+                    DestinationCandidate[i].CustomData += specifierOutput;
+                }
+            }
+
+            if(invalidIDs.Count > 0)
+            {
+                for(int i = 0; i < invalidIDs.Count; i++)
+                {
+                    for(int j = 0; j < invalidIDs[i].specifiers.Count; j++)
+                    {
+                        output += invalidIDs[i].block.CustomName + messages[Language]["invalidID1"] + "\"" + invalidIDs[i].specifiers[j] + "\"" + messages[Language]["invalidID2"];
+                    }
+                }
+            }
+            if(invalidPriorities.Count > 0)
+            {
+                for(int i = 0; i < invalidPriorities.Count; i++)
+                {
+                    for(int j = 0; j < invalidPriorities[i].specifiers.Count; j++)
+                    {
+                        output += invalidIDs[i].block.CustomName + messages[Language]["invalidPriority1"] + "\"" + invalidIDs[i].specifiers[j] + "\"" + messages[Language]["invalidPriority2"];
+                    }
+                }
             }
 
             //If an invalid priority is detected, stop the actual processing and try to find out invalid priorities.
             if (detectedInvalidSpecifiers)
             {
+                output += messages[Language]["detectedInvalidSpecifier"];
                 outputResult(OutputLCD, output, outputOnlyCustom);
                 return;
             }
